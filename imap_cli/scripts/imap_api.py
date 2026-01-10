@@ -12,7 +12,6 @@ import re
 import sys
 from wsgiref import simple_server
 
-import six
 from webob.dec import wsgify
 from webob.exc import status_map
 
@@ -122,7 +121,7 @@ def main():
 
     for routing in routings:
         methods, regex, app = routing[:3]
-        if isinstance(methods, six.string_types):
+        if isinstance(methods, str):
             methods = (methods,)
         vars = routing[3] if len(routing) >= 4 else {}
         routes.append((methods, re.compile(regex), app, vars))

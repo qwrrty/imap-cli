@@ -10,8 +10,6 @@ import imaplib
 import sys
 import unittest
 
-import six
-
 from imap_cli import const
 from imap_cli import fetch
 from imap_cli import tests
@@ -63,11 +61,11 @@ class FetchTest(unittest.TestCase):
         imaplib.IMAP4_SSL = tests.ImapConnectionMock()
 
     def test_display(self):
-        assert isinstance(fetch.display(self.reference_mail), six.string_types)
+        assert isinstance(fetch.display(self.reference_mail), str)
 
     def test_display_in_browser(self):
         assert isinstance(fetch.display(self.reference_mail, browser=True),
-                          six.string_types)
+                          str)
 
     def test_display_attachment(self):
         multipart_mail = copy.deepcopy(self.reference_mail)
@@ -77,7 +75,7 @@ class FetchTest(unittest.TestCase):
             u'filename': 'IMGTEST',
         })
 
-        assert isinstance(fetch.display(multipart_mail), six.string_types)
+        assert isinstance(fetch.display(multipart_mail), str)
 
     def test_fetch_wrong(self):
         self.imap_account = imaplib.IMAP4_SSL()

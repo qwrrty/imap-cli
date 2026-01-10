@@ -14,7 +14,6 @@ import re
 import sys
 
 import docopt
-import six
 
 import imap_cli
 from imap_cli import config
@@ -264,7 +263,7 @@ def fetch_mails_info(imap_account, mail_set=None, decode=True, limit=None):
 
     if mail_set is None:
         mail_set = fetch_uids(imap_account, limit=limit)
-    elif isinstance(mail_set, six.string_types):
+    elif isinstance(mail_set, str):
         mail_set = mail_set.split()
 
     mails_data = fetch.fetch(imap_account, mail_set,

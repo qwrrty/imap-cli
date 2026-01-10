@@ -5,12 +5,11 @@
 
 
 import codecs
+import configparser
 import getpass
 import itertools
 import logging
 import os
-
-from six.moves import configparser
 
 from imap_cli import const
 
@@ -103,7 +102,7 @@ def new_context_from_file(config_filename=None, encoding='utf-8',
 
     config_reader = configparser.RawConfigParser()
     with codecs.open(config_filename, 'r', encoding) as config_file:
-        config_reader.readfp(config_file)
+        config_reader.read_file(config_file)
 
     config = {}
     if section is None or section == 'imap':

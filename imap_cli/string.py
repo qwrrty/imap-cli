@@ -6,14 +6,12 @@
 
 import binascii
 
-import six
-
 
 def modified_base64(string):
     # TODO(rsoufflet) Found this code somewhere on internet, this is crapy,
     # need to work on that
     string = string.encode('utf-16be')
-    base64_string = six.text_type(binascii.b2a_base64(string))
+    base64_string = str(binascii.b2a_base64(string))
     base64_string = base64_string.rstrip('\\n\'').lstrip('b\'')
     return base64_string.rstrip('\n=').replace('/', ',')
 

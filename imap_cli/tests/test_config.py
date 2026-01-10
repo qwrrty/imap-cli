@@ -6,7 +6,6 @@
 
 import json
 from os import SEEK_SET
-from six.moves import configparser
 from tempfile import NamedTemporaryFile
 import unittest
 

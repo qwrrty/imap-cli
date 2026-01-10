@@ -23,7 +23,7 @@ There is NO WARRANTY, to the extent permitted by law.
 """
 
 
-import collections
+import collections.abc
 import email
 from email import header
 import logging
@@ -87,7 +87,7 @@ def fetch(imap_account, message_set=None, message_parts=None):
     information checkout RFC3501
     """
     if message_set is None or not isinstance(message_set,
-                                             collections.Iterable):
+                                             collections.abc.Iterable):
         if isinstance(message_set, int):
             message_set = [str(message_set)]
         else:
@@ -102,7 +102,7 @@ def fetch(imap_account, message_set=None, message_parts=None):
     request_message_set = ','.join(str(mail_id) for mail_id in message_set)
     request_message_parts = '({})'.format(' '.join(message_parts)
                                           if isinstance(message_parts,
-                                                        collections.Iterable)
+                                                        collections.abc.Iterable)
                                           else message_parts)
     if imap_account.state != 'SELECTED':
         log.warning(u'No directory specified, selecting {}'.format(
