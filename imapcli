@@ -53,6 +53,10 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+if [ "${COMMAND}" = "help" -a "${1}" = "" ]; then
+    HELP="true"
+fi
+
 [ "${HELP}" = "true" ] && echo "${HELP_MESSAGE}" && exit 0
 [ "${VERSION}" = "true" ] && echo "${VERSION_MESSAGE}" && exit 0
 

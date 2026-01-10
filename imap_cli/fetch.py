@@ -32,6 +32,8 @@ import sys
 
 import docopt
 
+from imaplib import IMAP4
+
 import imap_cli
 from imap_cli import config
 from imap_cli import const
@@ -108,9 +110,18 @@ def fetch(imap_account, message_set=None, message_parts=None):
         log.warning(u'No directory specified, selecting {}'.format(
             const.DEFAULT_DIRECTORY))
         imap_cli.change_dir(imap_account, const.DEFAULT_DIRECTORY)
-    typ, data_bytes = imap_account.uid(
-        'FETCH',
-        request_message_set, request_message_parts)
+    try:
+        typ, data_bytes = imap_account.uid(
+            'FETCH',
+            request_message_set, request_message_parts)
+    except IMAP4.error as e:
+        log.error("Error calling FETCH %s %s: %s",
+                  request_message_set,
+                  request_message_parts,
+                  e)
+        log.error("request_message_set: %d bytes", len(request_message_set))
+        return None
+
     data = []
     for mail in data_bytes:
         if len(mail) == 1:

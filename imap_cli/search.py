@@ -250,12 +250,17 @@ def display_mail_tree(imap_account, threads, mail_info_by_uid=None, depth=0,
 def fetch_mails_info(imap_account, mail_set=None, decode=True, limit=None):
     """Retrieve information for every mail in mail_set
 
+    Returns a dictionary with metadata about each email, with
+    keys flags, id, uid, from, to, date, subject
+
     .. versionadded:: 0.2
 
     :param imap_account: imaplib.IMAP4 or imaplib.IMAP4_SSL instance
     :param mail_set: List of mail UID
     :param decode: Wether we must or mustn't decode mails informations
     :param limit: Return only last mails
+    :return: email metadata
+    :rtype: dict
     """
     flags_re = re.compile(FLAGS_RE)
     mail_id_re = re.compile(MAIL_ID_RE)
@@ -282,7 +287,11 @@ def fetch_mails_info(imap_account, mail_set=None, decode=True, limit=None):
         mail_id = mail_id_match.groupdict().get('mail_id').split()[0]
         mail_uid = uid_match.groupdict().get('uid').split()[0]
 
-        mail = email.message_from_string(mail_data[1])
+        # Some IMAP servers return the mail data preceded with ">From "
+        # which screws up email.message_from_string parsing.
+        mailtext = mail_data[1][1:] if mail_data[1].startswith(">From ") else mail_data[1]
+
+        mail = email.message_from_string(mailtext)
         if decode is True:
             for header_name, header_value in mail.items():
                 header_new_value = []
