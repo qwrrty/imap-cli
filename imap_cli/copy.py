@@ -41,7 +41,7 @@ def copy(imap_account, message_set, destination):
         log.error('Invalid message set')
     request_message_set = ','.join(str(mail_id) for mail_id in message_set)
     status, result = imap_account.uid(
-        u'COPY',
+        'COPY',
         request_message_set,
         destination,
     )

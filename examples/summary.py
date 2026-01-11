@@ -56,9 +56,9 @@ def main():
                 for mail_info in search.fetch_mails_info(imap_account,
                                                          mail_set=mail_set):
                     format_string = ''.join([
-                        u'    {:<10} ',
-                        u'From : {:<30.30} \t',
-                        u'Subject : {:.50}\n'])
+                        '    {:<10} ',
+                        'From : {:<30.30} \t',
+                        'Subject : {:.50}\n'])
                     sys.stdout.write(format_string.format(
                         mail_info['uid'],
                         mail_info['from'],

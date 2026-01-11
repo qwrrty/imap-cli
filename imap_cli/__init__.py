@@ -107,14 +107,14 @@ def list_dir(imap_account):
 
 
 def status(imap_account):
-    """Return an interator of directory status.
+    """Return directory statuses, as a generator.
 
-    Each directory status provide the following keys::
+    Each directory status is a dict containing the following keys::
 
-        u'count'    # Number of mail in directory
-        u'directory # Name of directory
-        u'recent    # Number of recent mail
-        u'unseen    # Number of unseen mail
+        count     # Number of messages in directory
+        directory # Name of directory
+        recent    # Number of recent messages
+        unseen    # Number of unseen messages
 
     .. versionadded:: 0.1
 

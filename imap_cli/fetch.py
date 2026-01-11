@@ -59,14 +59,14 @@ def display(fetched_mail, browser=False):
                 displayable_parts.append(part.get('as_string'))
 
     if browser:
-        return u'<br><br>'.join(displayable_parts).strip()
+        return '<br><br>'.join(displayable_parts).strip()
 
     output = [
-        u'From       : {}'.format(fetched_mail['headers']['From']),
-        u'Subject    : {}'.format(fetched_mail['headers']['Subject']),
-        u'Date       : {}'.format(fetched_mail['headers'].get('Date')),
-        u'',
-        u'\n\n'.join(displayable_parts).strip()]
+        'From       : {}'.format(fetched_mail['headers']['From']),
+        'Subject    : {}'.format(fetched_mail['headers']['Subject']),
+        'Date       : {}'.format(fetched_mail['headers'].get('Date')),
+        '',
+        '\n\n'.join(displayable_parts).strip()]
 
     if len(other_parts) > 0:
         output.append('\nAttachment:')
@@ -74,7 +74,7 @@ def display(fetched_mail, browser=False):
             if part['filename']:
                 output.append('    {}'.format(part['filename']))
 
-    return u'{}\n'.format(u'\n'.join(output))
+    return '{}\n'.format('\n'.join(output))
 
 
 def fetch(imap_account, message_set=None, message_parts=None):
@@ -107,7 +107,7 @@ def fetch(imap_account, message_set=None, message_parts=None):
                                                         collections.abc.Iterable)
                                           else message_parts)
     if imap_account.state != 'SELECTED':
-        log.warning(u'No directory specified, selecting {}'.format(
+        log.warning('No directory specified, selecting {}'.format(
             const.DEFAULT_DIRECTORY))
         imap_cli.change_dir(imap_account, const.DEFAULT_DIRECTORY)
     try:

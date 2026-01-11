@@ -17,42 +17,42 @@ from imap_cli import tests
 
 class FetchTest(unittest.TestCase):
     reference_mail = {
-        u'headers': {
-            u'From': u'exampleFrom <example@from.org>',
-            u'Content-Transfer-Encoding': u'quoted-printable',
-            u'To': u'exampleTo <example@to.org>',
-            u'Date': u'Tue, 03 Jan 1989 09:42:34 +0200',
-            u'Subject': u'Mocking IMAP Protocols',
-            u'Content-Type': u'text/html;\r\n\tcharset="windows-1252"',
-            u'MIME-Version': u'1.0'
+        'headers': {
+            'From': 'exampleFrom <example@from.org>',
+            'Content-Transfer-Encoding': 'quoted-printable',
+            'To': 'exampleTo <example@to.org>',
+            'Date': 'Tue, 03 Jan 1989 09:42:34 +0200',
+            'Subject': 'Mocking IMAP Protocols',
+            'Content-Type': 'text/html;\r\n\tcharset="windows-1252"',
+            'MIME-Version': '1.0'
         },
-        u'parts': [
+        'parts': [
             {
-                u'as_string': u'\n'.join([
-                    u'From: exampleFrom <example@from.org>',
-                    u'Date: Tue, 03 Jan 1989 09:42:34 +0200',
-                    u'Subject: Mocking IMAP Protocols',
-                    u'To: exampleTo <example@to.org>',
-                    u'MIME-Version: 1.0',
-                    u'Content-Type: text/html;',
-                    u'\tcharset="windows-1252"',
-                    u'Content-Transfer-Encoding: quoted-printable',
-                    u'',
-                    u'EMAIL BODY CONTENT',
+                'as_string': '\n'.join([
+                    'From: exampleFrom <example@from.org>',
+                    'Date: Tue, 03 Jan 1989 09:42:34 +0200',
+                    'Subject: Mocking IMAP Protocols',
+                    'To: exampleTo <example@to.org>',
+                    'MIME-Version: 1.0',
+                    'Content-Type: text/html;',
+                    '\tcharset="windows-1252"',
+                    'Content-Transfer-Encoding: quoted-printable',
+                    '',
+                    'EMAIL BODY CONTENT',
                 ]),
-                u'data': u'\n'.join([
-                    u'From: exampleFrom <example@from.org>',
-                    u'Date: Tue, 03 Jan 1989 09:42:34 +0200',
-                    u'Subject: Mocking IMAP Protocols',
-                    u'To: exampleTo <example@to.org>',
-                    u'MIME-Version: 1.0',
-                    u'Content-Type: text/html;',
-                    u'\tcharset="windows-1252"',
-                    u'Content-Transfer-Encoding: quoted-printable',
-                    u'',
-                    u'EMAIL BODY CONTENT',
+                'data': '\n'.join([
+                    'From: exampleFrom <example@from.org>',
+                    'Date: Tue, 03 Jan 1989 09:42:34 +0200',
+                    'Subject: Mocking IMAP Protocols',
+                    'To: exampleTo <example@to.org>',
+                    'MIME-Version: 1.0',
+                    'Content-Type: text/html;',
+                    '\tcharset="windows-1252"',
+                    'Content-Transfer-Encoding: quoted-printable',
+                    '',
+                    'EMAIL BODY CONTENT',
                 ]),
-                u'content_type': 'text/html'
+                'content_type': 'text/html'
             },
         ]
     }
@@ -70,9 +70,9 @@ class FetchTest(unittest.TestCase):
     def test_display_attachment(self):
         multipart_mail = copy.deepcopy(self.reference_mail)
         multipart_mail['parts'].append({
-            u'content_type': u'img/png',
-            u'data': u'xxxxxx',
-            u'filename': 'IMGTEST',
+            'content_type': 'img/png',
+            'data': 'xxxxxx',
+            'filename': 'IMGTEST',
         })
 
         assert isinstance(fetch.display(multipart_mail), str)
@@ -85,9 +85,9 @@ class FetchTest(unittest.TestCase):
     def test_get_charset(self):
         multipart_mail = copy.deepcopy(self.reference_mail)
         multipart_mail['parts'].append({
-            u'content_type': u'img/png',
-            u'data': u'xxxxxx',
-            u'filename': 'IMGTEST',
+            'content_type': 'img/png',
+            'data': 'xxxxxx',
+            'filename': 'IMGTEST',
         })
 
         mail = email.message_from_string(

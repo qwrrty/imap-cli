@@ -137,6 +137,12 @@ You can also find in this file some comment describing all possibilities about e
 File configuration is not the only possibility. As the package imap-cli is designed to be an API, all configuration data
 are shared in a *context* object. You can load this context progamatically if you want.
 
+### trash ###
+
+In order to delete messages, the configuration file must include a `[trash]` stanza, e.g.
+
+    [trash]
+    trash_directory = Trash
 
 ## Further documentation ##
 

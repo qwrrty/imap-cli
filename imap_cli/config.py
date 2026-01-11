@@ -16,30 +16,30 @@ from imap_cli import const
 
 app_name = os.path.splitext(os.path.basename(__file__))[0]
 DEFAULT_CONFIG = {
-    u'hostname': u'imap.example.org',
-    u'username': u'username',
-    u'password': u'secret',
-    u'ssl': True,
+    'hostname': 'imap.example.org',
+    'username': 'username',
+    'password': 'secret',
+    'ssl': True,
 
-    u'limit': 10,
-    u'format_list': u''.join([
-        u'\n',
-        u'ID:         {uid}\n',
-        u'Flags:      {flags}\n',
-        u'From:       {from}\n',
-        u'To:         {to}\n',
-        u'Date:       {date}\n',
-        u'Subject:    {subject}',
+    'limit': 10,
+    'format_list': ''.join([
+        '\n',
+        'ID:         {uid}\n',
+        'Flags:      {flags}\n',
+        'From:       {from}\n',
+        'To:         {to}\n',
+        'Date:       {date}\n',
+        'Subject:    {subject}',
     ]),
-    u'format_thread': u'{uid} {subject} <<< FROM {from}',
-    u'format_status': u''.join([
-        u'{directory:>20} : ',
-        u'{count:>5} Mails - ',
-        u'{unseen:>5} Unseen - ',
-        u'{recent:>5} Recent']),
+    'format_thread': '{uid} {subject} <<< FROM {from}',
+    'format_status': ''.join([
+        '{directory:>20} : ',
+        '{count:>5} Mails - ',
+        '{unseen:>5} Unseen - ',
+        '{recent:>5} Recent']),
 
-    u'delete_method': u'MOVE_TO_TRASH',
-    u'trash_directory': u'Trash',
+    'delete_method': 'MOVE_TO_TRASH',
+    'trash_directory': 'Trash',
 }
 log = logging.getLogger(app_name)
 
@@ -56,14 +56,14 @@ def new_context(config=None):
     >>> from imap_cli import config
     >>> config.new_context({'hostname': 'another.imap-server.org',
                             'password': 'another.secret'})
-    {u'username': u'username', u'hostname': 'another.imap-server.org',
-     u'limit': 10, u'password': 'another.secret'}
+    {'username': 'username', 'hostname': 'another.imap-server.org',
+     'limit': 10, 'password': 'another.secret'}
     """
     if config is None:
-        log.debug(u'Loading default configuration')
+        log.debug('Loading default configuration')
         config = DEFAULT_CONFIG
     else:
-        log.debug(u'Loading custom configuration')
+        log.debug('Loading custom configuration')
 
     return dict(
         (key, value)
@@ -87,18 +87,18 @@ def new_context_from_file(config_filename=None, encoding='utf-8',
     >>> from imap_cli import config
     >>> config_file = 'config-example.ini'
     >>> config.new_context_from_file(config_file, section='imap')
-    {'hostname': u'imap.example.org', 'password': u'secret', 'ssl': True,
-     'username': u'username'}
+    {'hostname': 'imap.example.org', 'password': 'secret', 'ssl': True,
+     'username': 'username'}
     """
     if config_filename is None:
         config_filename = const.DEFAULT_CONFIG_FILE
     config_filename = os.path.abspath(
         os.path.expanduser(os.path.expandvars(config_filename)))
     if not os.path.isfile(config_filename):
-        log.error(u'Configuration file \'{}\' not found.'.format(
+        log.error('Configuration file \'{}\' not found.'.format(
             config_filename))
         return None
-    log.debug(u'Reading configuration file \'{}\''.format(config_filename))
+    log.debug('Reading configuration file \'{}\''.format(config_filename))
 
     config_reader = configparser.RawConfigParser()
     with codecs.open(config_filename, 'r', encoding) as config_file:
@@ -142,7 +142,7 @@ def new_context_from_file(config_filename=None, encoding='utf-8',
         config['format_list'] = (
             config_reader.get('display', 'format_list')
             if config_reader.has_option('display', 'format_list')
-            else u'From: {from:<30} To: {to:<20} Subject: {subject}'
+            else 'From: {from:<30} To: {to:<20} Subject: {subject}'
         )
 
         config['format_status'] = (

@@ -10,9 +10,9 @@ from imap_cli import string
 
 
 class ImapUTF7Test(unittest.TestCase):
-    encoded_string = (u'&AN8A7A-g '
-                      u'T&AOo-st '
-                      u'&A8kA7g-th spe&AOc-i&AOQ-l ch&AOIDwA-')
+    encoded_string = ('&AN8A7A-g '
+                      'T&AOo-st '
+                      '&A8kA7g-th spe&AOc-i&AOQ-l ch&AOIDwA-')
     decoded_string = u"ßìg Têst ωîth speçiäl châπ"
 
     def test_encode(self):

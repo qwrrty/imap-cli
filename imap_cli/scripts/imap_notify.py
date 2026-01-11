@@ -55,9 +55,9 @@ def main():
     except ValueError:
         log.error('Wrong value for options "delay"')
         return 1
-    format_str = args['--format'] or u' '.join([
-        u'{recent:<3} new mails in ',
-        u'{directory} ({count} total)'])
+    format_str = args['--format'] or ' '.join([
+        '{recent:<3} new mails in ',
+        '{directory} ({count} total)'])
 
     imap_account = imap_cli.connect(**connection_config)
 
@@ -73,7 +73,7 @@ def main():
                     notifications.append(format_str.format(**status))
             if len(notifications) > 0:
                 notifier = pynotify.Notification("IMAP Notify",
-                                                 u'\n'.join(notifications))
+                                                 '\n'.join(notifications))
                 notifier.show()
         time.sleep(1)
 

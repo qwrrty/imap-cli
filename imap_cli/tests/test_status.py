@@ -20,7 +20,7 @@ class StatusTest(unittest.TestCase):
 
         statuses = list(imap_cli.status(self.imap_account))
         for directory_status in statuses:
-            assert directory_status == {'directory': u'Δiπectòrÿ_ñämé',
+            assert directory_status == {'directory': 'Δiπectòrÿ_ñämé',
                                         'unseen': "0",
                                         'count': "1", 'recent': "1"}
         assert len(statuses) == 2
@@ -31,7 +31,7 @@ class StatusTest(unittest.TestCase):
         self.imap_account.fail = True
 
         for directory_status in imap_cli.status(self.imap_account):
-            assert directory_status == {'directory': u'Δiπectòrÿ_ñämé',
+            assert directory_status == {'directory': 'Δiπectòrÿ_ñämé',
                                         'unseen': "0", 'count': "1",
                                         'recent': "1"}
 
@@ -41,7 +41,7 @@ class StatusTest(unittest.TestCase):
 
         statuses = list(imap_cli.status(self.imap_account))
         for directory_status in statuses:
-            assert directory_status == {'directory': u'Δiπectòrÿ_ñämé',
+            assert directory_status == {'directory': 'Δiπectòrÿ_ñämé',
                                         'unseen': "0", 'count': "1",
                                         'recent': "1"}
         assert len(statuses) == 0

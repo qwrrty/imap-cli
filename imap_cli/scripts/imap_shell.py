@@ -35,7 +35,7 @@ log = logging.getLogger(app_name)
 
 class ImapShell(cmd.Cmd):
     completekey = 'Tab'
-    intro = u''.join([
+    intro = ''.join([
         'IMAP interactive Command Line Interpreter. ',
         'Type help or ? to list commands.\n'])
     prompt = '(imap-cli "INBOX") '
@@ -104,7 +104,7 @@ class ImapShell(cmd.Cmd):
         for mail_info in search.fetch_mails_info(self.imap_account,
                                                  limit=limit):
             sys.stdout.write(
-                u'UID : {:<10} From : {:<40.40} Subject : {:.50}\n'.format(
+                'UID : {:<10} From : {:<40.40} Subject : {:.50}\n'.format(
                     mail_info['uid'],
                     mail_info['from'],
                     mail_info['subject']))
@@ -144,11 +144,11 @@ class ImapShell(cmd.Cmd):
     def do_read(self, arg):
         '''Read mail by uid.'''
         try:
-            args = docopt.docopt(u'\n'.join([
-                u'Usage: read [options] <mail_uid> [<save_directory>]',
-                u'',
-                u'Options:',
-                u'    -b, --browser     Open mail in browser',
+            args = docopt.docopt('\n'.join([
+                'Usage: read [options] <mail_uid> [<save_directory>]',
+                '',
+                'Options:',
+                '    -b, --browser     Open mail in browser',
             ]), arg)
         except SystemExit:
             return
@@ -214,7 +214,7 @@ class ImapShell(cmd.Cmd):
         for mail_info in search.fetch_mails_info(self.imap_account,
                                                  mail_set=mail_set):
             sys.stdout.write(
-                u'UID : {:<10} From : {:<40.40} Subject : {:.50}\n'.format(
+                'UID : {:<10} From : {:<40.40} Subject : {:.50}\n'.format(
                     mail_info['uid'],
                     mail_info['from'],
                     mail_info['subject']))
@@ -225,7 +225,7 @@ class ImapShell(cmd.Cmd):
                                     key=lambda obj: obj['directory'])
         for directory_status in directory_statuses:
             sys.stdout.write(
-                u'{:<30} : Unseen {:<6}   Recent {:<6}   Total {:<6}\n'.format(
+                '{:<30} : Unseen {:<6}   Recent {:<6}   Total {:<6}\n'.format(
                     directory_status['directory'],
                     directory_status['unseen'],
                     directory_status['recent'],
@@ -242,7 +242,7 @@ class ImapShell(cmd.Cmd):
             for mail_info in search.fetch_mails_info(self.imap_account,
                                                      mail_set=mail_set):
                 sys.stdout.write(
-                    u'UID : {:<10} From : {:<40.40} Subject : {:.50}\n'.format(
+                    'UID : {:<10} From : {:<40.40} Subject : {:.50}\n'.format(
                         mail_info['uid'],
                         mail_info['from'],
                         mail_info['subject']))

@@ -66,9 +66,9 @@ def combine_search_criterion(search_criterion, operator='AND'):
     """
     if operator not in ['AND', 'OR', 'NOT']:
         operator = 'AND'
-        log.warning(u''.join([
-            u'Wrong value for "operator" argument,',
-            u'taking default value "{}"']).format(operator))
+        log.warning(''.join([
+            'Wrong value for "operator" argument,',
+            'taking default value "{}"']).format(operator))
 
     if operator == 'AND':
         return '({})'.format(' '.join(search_criterion))
@@ -235,7 +235,7 @@ def display_mail_tree(imap_account, threads, mail_info_by_uid=None, depth=0,
             indent = depth if idx > 0 else depth - 1
             if mail_info_by_uid.get(thread) is None:
                 continue
-            yield u'{}{}'.format('  ' * indent, format_thread.format(
+            yield '{}{}'.format('  ' * indent, format_thread.format(
                 **mail_info_by_uid[thread]))[0:140]
         else:
             for output in display_mail_tree(
@@ -303,7 +303,7 @@ def fetch_mails_info(imap_account, mail_set=None, decode=True, limit=None):
                                                       encoding or 'utf-8',
                                                       'ignore')
                     except TypeError:
-                        log.debug(u'Can\'t decode {} with {} encoding'.format(
+                        log.debug('Can\'t decode {} with {} encoding'.format(
                             value, encoding))
                         decoded_value = value
                     header_new_value.append(decoded_value)
@@ -340,7 +340,7 @@ def fetch_threads(imap_account, charset=None, limit=None,
         request_search_criterion = combine_search_criterion(search_criterion)
 
     if imap_account.state != 'SELECTED':
-        log.warning(u'No directory specified, selecting {}'.format(
+        log.warning('No directory specified, selecting {}'.format(
             const.DEFAULT_DIRECTORY))
         imap_cli.change_dir(imap_account, const.DEFAULT_DIRECTORY)
 
@@ -369,7 +369,7 @@ def fetch_uids(imap_account, charset=None, limit=None, search_criterion=None):
         request_search_criterion = combine_search_criterion(search_criterion)
 
     if imap_account.state != 'SELECTED':
-        log.warning(u'No directory specified, selecting {}'.format(
+        log.warning('No directory specified, selecting {}'.format(
             const.DEFAULT_DIRECTORY))
         imap_cli.change_dir(imap_account, const.DEFAULT_DIRECTORY)
 

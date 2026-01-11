@@ -40,10 +40,10 @@ def flag(imap_account, message_set, flags, unset=False):
         log.error('Invalid message set')
     request_message_set = ','.join(str(mail_id) for mail_id in message_set)
     status, result = imap_account.uid(
-        u'STORE',
+        'STORE',
         request_message_set,
-        u'+FLAGS' if unset is False else '-FLAGS',
-        u'({})'.format(u' '.join(flags)),
+        '+FLAGS' if unset is False else '-FLAGS',
+        '({})'.format(' '.join(flags)),
     )
     if status == const.STATUS_OK:
         log.debug('Flags "{}" have been set : {}'.format(flags, result))

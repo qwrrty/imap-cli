@@ -52,15 +52,15 @@ def main():
             )
 
             if len(mail_set) > 0:
-                sys.stdout.write(u'{} Directory\n'.format(
+                sys.stdout.write('{} Directory\n'.format(
                     directory_status['directory']))
 
                 for mail_info in search.fetch_mails_info(imap_account,
                                                          mail_set=mail_set):
-                    format_string = u''.join([
-                        u'    {:<10} ',
-                        u'From : {:<30.30} \t',
-                        u'Subject : {:.50}\n'])
+                    format_string = ''.join([
+                        '    {:<10} ',
+                        'From : {:<30.30} \t',
+                        'Subject : {:.50}\n'])
                     sys.stdout.write(format_string.format(
                         mail_info['uid'],
                         mail_info['from'],
