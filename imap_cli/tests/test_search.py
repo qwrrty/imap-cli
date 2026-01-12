@@ -209,25 +209,8 @@ class SearchTests(unittest.TestCase):
 
         assert list(search.fetch_uids(self.imap_account)) == ['1']
 
-    def test_fetch_threads(self):
-        self.imap_account = imaplib.IMAP4_SSL()
-
-        assert list(search.fetch_threads(self.imap_account)) == [[[1], [2]],
-                                                                 [3, 4]]
-        threads = search.fetch_threads(
-            self.imap_account,
-            search_criterion=['BODY "CONTENT"'],
-        )
-        assert list(threads) == [[[1], [2]], [3, 4]]
-
     def test_search_cli_tools(self):
         sys.argv = ['imap-cli-search', '-c', 'config-example.ini']
-        assert search.main() == 0
-
-        sys.argv = ['imap-cli-search', '--thread', '-c', 'wrong-config.ini']
-        assert search.main() == 1
-
-        sys.argv = ['imap-cli-search', '--thread', '-c', 'config-example.ini']
         assert search.main() == 0
 
         sys.argv = ['imap-cli-search', '-t testTag -T testText', '-c',

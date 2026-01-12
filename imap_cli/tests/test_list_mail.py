@@ -43,6 +43,3 @@ class ListMailTests(unittest.TestCase):
 
         sys.argv = ['imap-cli-list', '-v']
         assert list_mail.main() == 0
-
-        sys.argv = ['imap-cli-list', '--thread']
-        assert list_mail.main() == 0

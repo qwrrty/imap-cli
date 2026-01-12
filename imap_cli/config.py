@@ -31,7 +31,6 @@ DEFAULT_CONFIG = {
         'Date:       {date}\n',
         'Subject:    {subject}',
     ]),
-    'format_thread': '{uid} {subject} <<< FROM {from}',
     'format_status': ''.join([
         '{directory:>20} : ',
         '{count:>5} Mails - ',
@@ -149,12 +148,6 @@ def new_context_from_file(config_filename=None, encoding='utf-8',
             config_reader.get('display', 'format_status')
             if config_reader.has_option('display', 'format_status')
             else DEFAULT_CONFIG['format_status']
-        )
-
-        config['format_thread'] = (
-            config_reader.get('display', 'format_thread')
-            if config_reader.has_option('display', 'format_thread')
-            else DEFAULT_CONFIG['format_thread']
         )
 
     if section is None or section == 'trash':

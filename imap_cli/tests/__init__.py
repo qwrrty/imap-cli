@@ -99,8 +99,4 @@ class ImapConnectionMock(mock.Mock):
             return self.search(*args)
         if command_upper == 'STORE':
             return self.store(*args)
-        if command_upper == 'THREAD':
-            return self.thread(*args)
 
-    def thread(self, *args):
-        return ('OK', [b'((1)(2))(3 4)'])
