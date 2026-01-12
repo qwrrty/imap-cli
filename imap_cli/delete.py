@@ -3,11 +3,11 @@
 
 """Set flags on a set of mails
 
-Usage: imap-cli-delete [options] <mail_id>...
+Usage: imap-cli-delete [options] <search-cmd>...
 
 Options:
     -c, --config-file=<FILE>    Configuration file
-    -d, --directory MAILBOX     Specify a Mailbox
+    -m, --mailbox MAILBOX       Specify a Mailbox
     -v, --verbose               Generate verbose messages
     -h, --help                  Show help options.
     --version                   Print program version.
@@ -31,6 +31,7 @@ from imap_cli import config
 from imap_cli import const
 from imap_cli import copy
 from imap_cli import flag
+from imap_cli.search import fetch_uids
 
 
 log = logging.getLogger('imap-cli-delete')
@@ -53,13 +54,19 @@ def main():
     try:
         imap_account = imap_cli.connect(**conf)
         imap_cli.change_dir(imap_account,
-                            args['--directory'] or const.DEFAULT_DIRECTORY,
+                            args['--mailbox'] or const.DEFAULT_DIRECTORY,
                             read_only=False)
 
+        # get UIDs for the messages to delete
+        mailset = fetch_uids(imap_account, search_criterion=args['<search-cmd>'])
+        if not mailset:
+            log.info("No messages found")
+            return 1
+
         if delete_conf['delete_method'] == 'MOVE_TO_TRASH':
-            copy.copy(imap_account, args['<mail_id>'],
+            copy.copy(imap_account, mailset,
                       delete_conf['trash_directory'])
-        flag.flag(imap_account, args['<mail_id>'], [const.FLAG_DELETED])
+        flag.flag(imap_account, mailset, [const.FLAG_DELETED])
         if delete_conf['delete_method'] in ['MOVE_TO_TRASH', 'EXPUNGE']:
             imap_account.expunge()
 
