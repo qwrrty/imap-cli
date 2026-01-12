@@ -18,10 +18,11 @@ import imap_cli
 from imap_cli import config
 from imap_cli import const
 from imap_cli import fetch
+from imap_cli.search import fetch_mails_info, fetch_uids
 
 
 log = logging.getLogger('imap-cli-list')
-usage = """Usage: imap-cli-mm [options] <search-cmd>...
+usage = """Usage: imap-cli-show [options] <search-cmd>...
 
 Options:
     -m, --mailbox=<mailbox>     Search the specified mailbox (default: INBOX)
@@ -140,120 +141,12 @@ The "search-cmd" arguments specify an IMAP search string, as follows:
       UNSEEN         Messages that do not have the \\Seen flag set.
 
 ----
-imap-cli-mm 0.7
+imap-cli-show 0.7
 Copyright (C) 2026 Tim Pierce
 MIT License
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
 """
-
-
-FLAGS_RE = r'.*FLAGS \((?P<flags>[^\)]*)\)'
-MAIL_ID_RE = r'^(?P<mail_id>\d+) \('
-UID_RE = r'.*UID (?P<uid>[^ ]*)'
-
-
-def fetch_mails_info(imap_account, mail_set=None, decode=True, limit=None):
-    """Retrieve information for every mail in mail_set
-
-    Returns a dictionary with metadata about each email, with
-    keys flags, id, uid, from, to, date, subject
-
-    .. versionadded:: 0.2
-
-    :param imap_account: imaplib.IMAP4 or imaplib.IMAP4_SSL instance
-    :param mail_set: List of mail UID
-    :param decode: Wether we must or mustn't decode mails informations
-    :param limit: Return only last mails
-    :return: email metadata
-    :rtype: dict
-    """
-    flags_re = re.compile(FLAGS_RE)
-    mail_id_re = re.compile(MAIL_ID_RE)
-    uid_re = re.compile(UID_RE)
-
-    if mail_set is None:
-        mail_set = fetch_uids(imap_account, limit=limit)
-    elif isinstance(mail_set, str):
-        mail_set = mail_set.split()
-
-    mails_data = fetch.fetch(imap_account, mail_set,
-                             ['BODY.PEEK[HEADER]', 'FLAGS', 'UID'])
-    if mails_data is None:
-        return
-
-    for mail_data in mails_data:
-        flags_match = flags_re.match(mail_data[0])
-        mail_id_match = mail_id_re.match(mail_data[0])
-        uid_match = uid_re.match(mail_data[0])
-        if mail_id_match is None or flags_match is None or uid_match is None:
-            continue
-
-        flags = flags_match.groupdict().get('flags').split()
-        mail_id = mail_id_match.groupdict().get('mail_id').split()[0]
-        mail_uid = uid_match.groupdict().get('uid').split()[0]
-
-        # Some IMAP servers return the mail data preceded with ">From "
-        # which screws up email.message_from_string parsing.
-        mailtext = mail_data[1][1:] if mail_data[1].startswith(">From ") else mail_data[1]
-
-        mail = email.message_from_string(mailtext)
-        if decode is True:
-            for header_name, header_value in mail.items():
-                header_new_value = []
-                for value, encoding in header.decode_header(header_value):
-                    if value is None:
-                        continue
-                    try:
-                        decoded_value = codecs.decode(value,
-                                                      encoding or 'utf-8',
-                                                      'ignore')
-                    except TypeError:
-                        log.debug("Can't decode {} with {} encoding".format(
-                            value, encoding))
-                        decoded_value = value
-                    header_new_value.append(decoded_value)
-                mail.replace_header(header_name, ' '.join(header_new_value))
-
-        yield dict([
-            ('flags', flags),
-            ('id', mail_id),
-            ('uid', mail_uid),
-            ('from', mail['from']),
-            ('to', mail['to']),
-            ('date', mail['date']),
-            ('subject', mail.get('subject', '')),
-        ])
-
-
-def fetch_uids(imap_account, charset=None, limit=None, search_criterion=None):
-    """Retrieve information for every mail search_criterion.
-
-    .. versionadded:: 0.3
-
-    :param imap_account: imaplib.IMAP4 or imaplib.IMAP4_SSL instance
-    :param charset: Desired charset for IMAP response
-    :param limit: Return only last mails
-    :param search_criterion: List of criteria for IMAP Search
-    """
-    request_search_criterion = search_criterion
-    if search_criterion is None:
-        request_search_criterion = 'ALL'
-    elif isinstance(search_criterion, list):
-        request_search_criterion = ' '.join(search_criterion)
-
-    if imap_account.state != 'SELECTED':
-        log.warning('No directory specified, selecting {}'.format(
-            const.DEFAULT_DIRECTORY))
-        imap_cli.change_dir(imap_account, const.DEFAULT_DIRECTORY)
-
-    status, data_bytes = imap_account.uid(
-        'SEARCH',
-        charset,
-        request_search_criterion)
-    data = [data_bytes[0].decode('utf-8')]
-    if status == const.STATUS_OK:
-        return data[0].split() if limit is None else data[0].split()[-limit:]
 
 
 def main():
