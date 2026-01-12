@@ -22,38 +22,24 @@ from imap_cli import fetch
 
 
 log = logging.getLogger('imap-cli-list')
-usage = """Usage: imap-cli-search [options] [-t <tags>] [-T <full-text>]
-[<directory>]
-
-Options:
-    -a, --address=<address>     Search for specified "FROM" address
-    -c, --config-file=<FILE>    Configuration file (`~/.config/imap-cli` by
-                                default)
-    -d, --date=<date>           Search mail receive since the specified date
-                                (format YYYY-MM-DD)
-    -f, --format=<FMT>          Output format
-    -l, --limit=<limit>         Limit number of mail displayed
-    -s, --size=<SIZE>           Search mails larger than specified size (in
-                                bytes)
-    -S, --subject=<subject>     Search by subject
-    -t, --tags=<tags>           Searched tags (Comma separated values)
-    -T, --full-text=<text>      Searched tags (Comma separated values)
-    -v, --verbose               Generate verbose messages
-    -h, --help                  Show help options.
-    --version                   Print program version.
-
-----
-imap-cli-search 0.7
-Copyright (C) 2014 Romain Soufflet
-License MIT
-This is free software: you are free to change and redistribute it.
-There is NO WARRANTY, to the extent permitted by law.
-"""
-
 
 FLAGS_RE = r'.*FLAGS \((?P<flags>[^\)]*)\)'
 MAIL_ID_RE = r'^(?P<mail_id>\d+) \('
 UID_RE = r'.*UID (?P<uid>[^ ]*)'
+
+
+def escape(word):
+    """Escape a word with quotation marks if necessary to preserve spaces.
+
+    :param word: a string containing a word or search term
+    :returns: the input word, surrounded by quotation marks if necessary
+    :rtype: str
+    """
+
+    if any(c.isspace() for c in word):
+        return '"{}"'.format(word)
+    else:
+        return word
 
 
 def combine_search_criterion(search_criterion, operator='AND'):
@@ -70,11 +56,11 @@ def combine_search_criterion(search_criterion, operator='AND'):
             'taking default value "{}"']).format(operator))
 
     if operator == 'AND':
-        return '({})'.format(' '.join(search_criterion))
+        return '({})'.format(' '.join([escape(w) for w in search_criterion]))
     if operator == 'OR':
-        return 'OR {}'.format(' '.join(search_criterion))
+        return 'OR {}'.format(' '.join([escape(w) for w in search_criterion]))
     if operator == 'NOT':
-        return 'NOT {}'.format(' '.join(search_criterion))
+        return 'NOT {}'.format(' '.join([escape(w) for w in search_criterion]))
 
 
 def create_search_criterion(address=None, date=None, size=None, subject=None,
