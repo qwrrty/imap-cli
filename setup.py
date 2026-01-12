@@ -31,7 +31,7 @@ setuptools.setup(
             'imap-cli-flag=imap_cli.flag:main',
             'imap-cli-list=imap_cli.list_mail:main',
             'imap-cli-read=imap_cli.fetch:main',
-            'imap-cli-search=imap_cli.search:main',
+            'imap-cli-show=imap_cli.show:main',
             'imap-cli-status=imap_cli.summary:main',
             'imap-notify=imap_cli.scripts.imap_notify:main',
             'imap-shell=imap_cli.scripts.imap_shell:main',

@@ -34,7 +34,7 @@ while [[ $# -gt 0 ]]; do
     shift
 
     case $key in
-        status|list|search|read|flag|copy|delete|help)
+        status|list|show|read|flag|copy|delete|help)
             COMMAND="${key}"
             break
             ;;
